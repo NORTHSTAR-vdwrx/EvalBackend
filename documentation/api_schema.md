@@ -6,12 +6,13 @@ All requests and responses are JSON. All URLs start with `/api`.
 ## Conventions
 
 - **Auth:** after login, the client sends `Authorization: Bearer <token>` on every request.
-- **Roles:** `educator` or `student`. Each endpoint below says who may call it.
+- **Roles:** `administrator`, `educator` or `student`. Each endpoint below says who may call it.
 - **Success:** `200` (OK), `201` (created).
+- **Server authority:** the client displays questions/options and collects selections only. The server performs authorization, eligibility, timing, answer validation, checkpoint persistence, result visibility checks, and grading. Never send correct-answer data in a student-facing response or grade answers in the client.
 - **Errors** always look like this:
 
 ```json
-{ "error": "Short human-readable message" }
+{ "error": "Short human-readable message", "code": 499 }
 ```
 
 | Code | Meaning |
@@ -22,7 +23,6 @@ All requests and responses are JSON. All URLs start with `/api`.
 | 404 | Not found |
 | 409 | Conflict (duplicate email, attempt limit reached) |
 
-**Golden rule:** no student-facing response may ever contain `is_correct`.
 
 ---
 
@@ -37,7 +37,7 @@ All requests and responses are JSON. All URLs start with `/api`.
 **POST /api/auth/register**
 ```json
 // request
-{ "name": "Aditya", "email": "a@x.com", "password": "secret123", "role": "student" }
+{ "name": "Aditya", "email": "a@x.com", "password": "<PasswordHash>", "role": "student" }
 // response 201
 { "id": 4, "name": "Aditya", "role": "student" }
 ```
@@ -45,7 +45,7 @@ All requests and responses are JSON. All URLs start with `/api`.
 **POST /api/auth/login**
 ```json
 // request
-{ "email": "a@x.com", "password": "secret123" }
+{ "email": "a@x.com", "password": "<PasswordHash>" }
 // response 200
 { "token": "eyJ...", "user": { "id": 4, "name": "Aditya", "role": "student" } }
 ```
@@ -79,10 +79,10 @@ All requests and responses are JSON. All URLs start with `/api`.
   "marks": 1,
   "allow_multiple": false,
   "options": [
-    { "text": "def", "is_correct": true },
-    { "text": "func", "is_correct": false },
-    { "text": "function", "is_correct": false },
-    { "text": "define", "is_correct": false }
+    { "text": "def" },
+    { "text": "func" },
+    { "text": "function" },
+    { "text": "define" }
   ]
 }
 ```
@@ -120,12 +120,12 @@ All requests and responses are JSON. All URLs start with `/api`.
 |---|---|---|
 | POST | `/api/sessions/<id>/start` | Start an attempt; server builds this student's random question set |
 | GET | `/api/attempts/<id>` | Resume after a refresh (same questions, saved answers) |
-| PUT | `/api/attempts/<id>/answers` | Autosave one answer |
-| POST | `/api/attempts/<id>/submit` | Final submit and grade |
+| PUT | `/api/attempts/<id>/exam_checkpoint` | Save or replace the answer for one question |
+| POST | `/api/attempts/<id>/submit` | Final submit; server grades the whole attempt |
 | GET | `/api/attempts/mine` | Previous tests page |
 | GET | `/api/attempts/<id>/result` | Score (only if the educator allows it) |
 
-**POST /api/sessions/9/start** returns the questions, with no answers:
+**POST /api/sessions/9/start** returns this student's questions and options, but no correct-answer data:
 ```json
 {
   "attempt_id": 31,
@@ -137,22 +137,31 @@ All requests and responses are JSON. All URLs start with `/api`.
   ]
 }
 ```
+Student-facing responses must not contain correct-option IDs, `is_correct` flags, answer keys, or other data that reveals the correct options.
 
-**PUT /api/attempts/31/answers** (safe to call repeatedly)
+**PUT /api/attempts/31/exam_checkpoint** saves one question's current selection (safe to retry):
 ```json
 { "question_id": 12, "option_ids": [45] }
 ```
 
-Server checks on every answer call:
-1. The attempt belongs to the logged-in student.
-2. The attempt is still `in_progress`.
-3. The time has not run out (otherwise auto-submit and return `403`).
-
-**POST /api/attempts/31/submit** response:
+Each call saves a row in the `exam_checkpoint` table for the `(attempt_id, question_id)` pair. The row contains the attempt ID, question ID, selected option IDs, and save timestamp. A later checkpoint for the same question replaces its earlier selection, so retries or answer changes do not create duplicate rows. For example:
 ```json
+{
+  "attempt_id": 31,
+  "question_id": 12,
+  "option_ids": [45],
+  "saved_at": "2026-10-25T10:12:00"
+}
+```
+
+The server validates every checkpoint: the attempt belongs to the logged-in student, is still `in_progress`, has not run out of time, the question belongs to the attempt, and the selected options belong to that question and satisfy its selection rules. If time has run out, the server auto-submits the attempt and rejects the checkpoint. The client must not decide whether a checkpoint is valid or whether its answer is correct. An `exam_checkpoint` stores selections only; it does not expose or calculate correctness.
+
+**POST /api/attempts/31/submit** finalizes the whole attempt. The server grades saved checkpoints against the answer key on the server; the client never receives the answer key or performs grading. A repeated submission must not grade or finalize the same attempt a second time.
+```json
+// response 200
 { "status": "submitted", "message": "Your answers were recorded." }
 ```
-(Return the score only when the educator allows it.)
+Return a score only when the educator allows it. Do not return correct options or answer keys in the submit response; result visibility is checked by the server.
 
 ---
 
@@ -190,7 +199,7 @@ Server checks on every answer call:
 3. Role-check decorator
 4. Quiz and question CRUD
 5. Sessions: create, join
-6. Start attempt, autosave answer, submit and grade
+6. Start attempt, save per-question `exam_checkpoint` records, submit and grade on the server
 7. Previous tests
 8. Week 3 endpoints
 
