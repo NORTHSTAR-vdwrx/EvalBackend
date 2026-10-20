@@ -1,12 +1,16 @@
-from flask import Flask
+from fastapi import FastAPI
 
-from app.routes.home import home_bp
-from app.routes.admin.settings import admin_bp
+from app.routes.admin.settings import admin_router
+from app.routes.auth.auth import auth_router
+from app.routes.home import home_router
+from app.routes.practice import practice_router
 
-def create_app():
-    app = Flask(__name__)
 
-    app.register_blueprint(home_bp)
-    app.register_blueprint(admin_bp)
-    
+def create_app() -> FastAPI:
+    app = FastAPI(title="NORTHSTAR Eval API")
+
+    app.include_router(home_router)
+    app.include_router(admin_router)
+    app.include_router(practice_router)
+    app.include_router(auth_router)
     return app

@@ -1,7 +1,9 @@
-from flask import Blueprint
+from fastapi import APIRouter
+from fastapi.responses import PlainTextResponse
 
-admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
+admin_router = APIRouter(prefix="/admin")
 
-@admin_bp.route('/settings')
-def admin_settings():
+
+@admin_router.get("/settings", response_class=PlainTextResponse)
+async def admin_settings() -> str:
     return "admin settings page"

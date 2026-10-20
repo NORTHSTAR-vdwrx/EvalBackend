@@ -192,19 +192,18 @@ Return a score only when the educator allows it. Do not return correct options o
 
 ---
 
-## Build order for Pranav
+## Suggested implementation order
 
-1. `GET /api/health` (check the server runs)
-2. Register, login, `me`
-3. Role-check decorator
-4. Quiz and question CRUD
-5. Sessions: create, join
-6. Start attempt, save per-question `exam_checkpoint` records, submit and grade on the server
-7. Previous tests
-8. Week 3 endpoints
+Build each stage end-to-end, including its database changes and tests, before moving to the next:
 
-## Questions to settle with the team
+1. **Backend foundation:** app configuration, database connection/schema, request validation, and consistent error responses. Add a health endpoint as a quick check that the app and database are available.
+2. **Identity and access control:** registration, login, current-user lookup, authentication, and reusable role/ownership checks. Protect educator and student routes before adding their features.
+3. **Quiz authoring:** educator quiz and question CRUD, including options and correct-answer storage. Verify that correct-answer data is only returned to authorized educators.
+4. **Exam sessions:** create sessions, list/join sessions, register students, and enforce session dates and attempt limits.
+5. **Student attempt lifecycle:** start an attempt and create its fixed question set; return questions/options without correct-answer data; resume the attempt; save or replace each answer in `exam_checkpoint`. Enforce ownership, question membership, selection rules, and time limits on the server.
+6. **Submission and grading:** finalize an attempt once, grade its saved checkpoints on the server, and store the outcome. Test incomplete, repeated, and timed-out submissions.
+7. **Student results and history:** previous attempts and result retrieval, with server-side checks for result visibility. Do not expose correct options unless a deliberate educator-controlled review feature is added.
+8. **Post-MVP features:** events, analytics, reports, and exports, built on top of persisted attempts and grades.
 
-- Token type: JWT via `flask-jwt-extended` is the simplest choice.
-- Does Sreyam want any extra fields in the responses (for example, the student's name on the session status list)?
-- Will results be shown immediately after submit? This decides what `/submit` returns.
+The first substantial feature to implement is identity and access control after the backend foundation: every later feature depends on knowing who is making a request and what they are allowed to do.
+
