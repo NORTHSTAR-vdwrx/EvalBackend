@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 
+
 auth_router = APIRouter(prefix="/api/auth")
 
 
