@@ -1,6 +1,6 @@
 # NORTHSTAR Eval: API Schema (draft v1)
 
-Backend: Python + Flask. Database: MySQL (see `schema.sql`).
+Backend: Python + Flask. Database: PostgreSQL (see `schema.sql`).
 All requests and responses are JSON. All URLs start with `/api`.
 
 ## Conventions
