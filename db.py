@@ -30,3 +30,7 @@ async def get_db() -> AsyncIterator[psycopg.AsyncConnection]:
     """FastAPI dependency: borrows a connection and returns it to the pool."""
     async with pool.connection() as conn:
         yield conn
+
+
+def get_sync_connection() -> psycopg.Connection:
+    return psycopg.connect(conninfo)
