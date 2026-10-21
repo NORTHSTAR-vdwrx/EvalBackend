@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import StrEnum
+from uuid import UUID
 from pydantic import BaseModel, EmailStr, Field
 
 class Role(StrEnum):
@@ -8,7 +9,7 @@ class Role(StrEnum):
     administrator = "administrator"
 
 class PublicUserAccount(BaseModel):
-    id: int
+    id: UUID
     username: str = Field(min_length=4, max_length=32)
     email: EmailStr
     role: Role
