@@ -11,7 +11,8 @@ from pydantic import BaseModel
 from db import get_db
 from app.routes.auth.auth import auth_router
 from models import PublicUserAccount
-from app.routes.auth.security import SESSION_COOKIE, hash_token
+from app.routes.auth.security import SESSION_COOKIE, hash_token, get_current_user
+
 
 ph = PasswordHasher()
 DUMMY_HASH = ph.hash("not-a-real-password")
@@ -82,3 +83,8 @@ async def logout(
                 "DELETE FROM sessions WHERE token_hash = %s", (hash_token(session),)
             )
     response.delete_cookie(SESSION_COOKIE, path="/")
+
+
+@auth_router.get("/me", response_model=PublicUserAccount)
+async def me(user: PublicUserAccount = Depends(get_current_user)):
+    return user
