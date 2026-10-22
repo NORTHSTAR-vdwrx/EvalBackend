@@ -8,8 +8,8 @@ practice_router = APIRouter(prefix="/api/practice")
 async def student() -> JSONResponse:
     return JSONResponse(content={"key":"text"})
 @practice_router.get("/hello/{name}")
-async def hello(name: str) -> JSONResponse: #js playing around with shytt ts kinda fun ngl
-    return {"message": "hello {name}!"}
+async def hello(name: str) -> JSONResponse: 
+    return JSONResponse({"message": "hello {name}!"})
 @practice_router.get("/greet")
-def greet(name: str = "stranger") -> JSONResponse:
-    return {"message": "Hey there {name}!"}
+async def greet(name: str = "stranger") -> JSONResponse:
+    return JSONResponse({"message": "Hey there {name}!"})
