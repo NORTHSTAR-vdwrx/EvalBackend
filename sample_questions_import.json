@@ -1,0 +1,414 @@
+{
+  "questions": [
+    {
+      "question_text": "Which planet is known as the Red Planet?",
+      "question_type": "single_choice",
+      "points": 1,
+      "position": 0,
+      "options": [
+        {
+          "option_text": "Mars",
+          "is_correct": true,
+          "feedback": "Mars appears red because of iron oxide on its surface."
+        },
+        {
+          "option_text": "Venus",
+          "is_correct": false
+        },
+        {
+          "option_text": "Jupiter",
+          "is_correct": false
+        }
+      ],
+      "feedback": "The correct answer is Mars.",
+      "worked_solution": "Mars is commonly called the Red Planet due to iron oxide on its surface.",
+      "partial_credit": {
+        "all_or_nothing": true
+      },
+      "tags": [
+        "astronomy",
+        "planets"
+      ],
+      "difficulty": 1,
+      "standard_code": "SCI-SPACE-01",
+      "blooms_level": "remember",
+      "folder_path": "Science/Astronomy"
+    },
+    {
+      "question_text": "Select all prime numbers.",
+      "question_type": "multiple_choice",
+      "points": 2,
+      "position": 1,
+      "options": [
+        {
+          "option_text": "2",
+          "is_correct": true
+        },
+        {
+          "option_text": "9",
+          "is_correct": false
+        },
+        {
+          "option_text": "11",
+          "is_correct": true
+        },
+        {
+          "option_text": "15",
+          "is_correct": false
+        }
+      ],
+      "partial_credit": {
+        "all_or_nothing": false,
+        "per_correct_option": 1,
+        "penalty_per_incorrect_option": 0.5
+      },
+      "tags": [
+        "math",
+        "number-theory"
+      ],
+      "difficulty": 2,
+      "blooms_level": "understand"
+    },
+    {
+      "question_text": "The Earth orbits the Sun.",
+      "question_type": "true_false",
+      "points": 1,
+      "position": 2,
+      "options": [
+        {
+          "option_text": "True",
+          "is_correct": true
+        },
+        {
+          "option_text": "False",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "astronomy"
+      ],
+      "difficulty": 1,
+      "blooms_level": "remember"
+    },
+    {
+      "question_text": "In one sentence, describe the main purpose of the heart.",
+      "question_type": "short_answer",
+      "points": 2,
+      "position": 3,
+      "accepted_answers": [
+        "to pump blood",
+        "pumps blood around the body",
+        "the heart pumps blood through the body"
+      ],
+      "answer_config": {
+        "case_sensitive": false,
+        "trim_whitespace": true,
+        "ignore_spaces": false
+      },
+      "feedback": "The heart pumps blood around the body.",
+      "tags": [
+        "biology",
+        "human-body"
+      ],
+      "difficulty": 1,
+      "blooms_level": "understand"
+    },
+    {
+      "question_text": "A runner travels 100 meters in 12.5 seconds. What is the average speed in m/s?",
+      "question_type": "numeric",
+      "points": 2,
+      "position": 4,
+      "answer_config": {
+        "correct_value": 8,
+        "tolerance": 0.1,
+        "unit": "m/s"
+      },
+      "feedback": "Average speed is distance divided by time.",
+      "worked_solution": "100 / 12.5 = 8 m/s.",
+      "tags": [
+        "physics",
+        "speed"
+      ],
+      "difficulty": 2,
+      "blooms_level": "apply"
+    },
+    {
+      "question_text": "The chemical formula for water is ___.",
+      "question_type": "fill_blank",
+      "points": 1,
+      "position": 5,
+      "accepted_answers": [
+        "H2O",
+        "h2o"
+      ],
+      "answer_config": {
+        "case_sensitive": false,
+        "trim_whitespace": true,
+        "ignore_spaces": true
+      },
+      "tags": [
+        "chemistry",
+        "formulas"
+      ],
+      "difficulty": 1,
+      "blooms_level": "remember"
+    },
+    {
+      "question_text": "Match each animal to its animal class.",
+      "question_type": "matching",
+      "points": 3,
+      "position": 6,
+      "answer_config": {
+        "correct_answer": {
+          "frog": "amphibian",
+          "eagle": "bird",
+          "whale": "mammal"
+        }
+      },
+      "interaction_config": {
+        "prompts": [
+          "frog",
+          "eagle",
+          "whale"
+        ],
+        "choices": [
+          "amphibian",
+          "bird",
+          "mammal"
+        ]
+      },
+      "tags": [
+        "biology",
+        "classification"
+      ],
+      "difficulty": 2,
+      "blooms_level": "understand"
+    },
+    {
+      "question_text": "Put these stages of a butterfly's life cycle in order.",
+      "question_type": "ordering",
+      "points": 4,
+      "position": 7,
+      "answer_config": {
+        "correct_answer": [
+          "egg",
+          "larva",
+          "pupa",
+          "adult"
+        ]
+      },
+      "interaction_config": {
+        "items": [
+          "pupa",
+          "adult",
+          "egg",
+          "larva"
+        ]
+      },
+      "tags": [
+        "biology",
+        "life-cycles"
+      ],
+      "difficulty": 2,
+      "blooms_level": "understand"
+    },
+    {
+      "question_text": "Click the approximate location of the capital of France on the map.",
+      "question_type": "hotspot",
+      "points": 2,
+      "position": 8,
+      "image_url": "https://example.com/europe-map.png",
+      "answer_config": {
+        "correct_answer": {
+          "x": 0.51,
+          "y": 0.38
+        },
+        "tolerance": 0.05
+      },
+      "interaction_config": {
+        "coordinate_system": "normalized",
+        "coordinate_range": [
+          0,
+          1
+        ]
+      },
+      "media": [
+        {
+          "media_type": "image",
+          "url": "https://example.com/europe-map.png",
+          "alt_text": "Map of Europe"
+        }
+      ],
+      "tags": [
+        "geography",
+        "europe"
+      ],
+      "difficulty": 2,
+      "blooms_level": "apply"
+    },
+    {
+      "question_text": "Drag each label to the matching part of a plant cell.",
+      "question_type": "drag_drop",
+      "points": 3,
+      "position": 9,
+      "image_url": "https://example.com/plant-cell.png",
+      "answer_config": {
+        "correct_answer": {
+          "nucleus": "target-nucleus",
+          "cell-wall": "target-cell-wall",
+          "chloroplast": "target-chloroplast"
+        }
+      },
+      "interaction_config": {
+        "labels": [
+          "nucleus",
+          "cell-wall",
+          "chloroplast"
+        ],
+        "targets": [
+          "target-nucleus",
+          "target-cell-wall",
+          "target-chloroplast"
+        ],
+        "allow_multiple_labels_per_target": false
+      },
+      "media": [
+        {
+          "media_type": "diagram",
+          "url": "https://example.com/plant-cell.png",
+          "alt_text": "Plant cell diagram with label targets"
+        }
+      ],
+      "tags": [
+        "biology",
+        "cells"
+      ],
+      "difficulty": 3,
+      "blooms_level": "apply"
+    },
+    {
+      "question_text": "Write a function that returns the larger of two integers.",
+      "question_type": "code",
+      "points": 5,
+      "position": 10,
+      "answer_config": {
+        "language": "python",
+        "starter_code": "def larger(a, b):\n    pass",
+        "test_cases": [
+          {
+            "input": [
+              2,
+              5
+            ],
+            "expected_output": 5
+          },
+          {
+            "input": [
+              -3,
+              -1
+            ],
+            "expected_output": -1
+          }
+        ]
+      },
+      "interaction_config": {
+        "code_editor": true,
+        "language": "python"
+      },
+      "feedback": "Compare the two values and return the greater one.",
+      "worked_solution": "Return a if a > b, otherwise return b.",
+      "tags": [
+        "programming",
+        "python",
+        "functions"
+      ],
+      "difficulty": 2,
+      "blooms_level": "apply"
+    },
+    {
+      "question_text": "Explain how evidence from fossils supports the theory of evolution.",
+      "question_type": "long_answer",
+      "points": 10,
+      "position": 11,
+      "media": [
+        {
+          "media_type": "image",
+          "url": "https://example.com/fossil-example.jpg",
+          "alt_text": "Fossil embedded in rock"
+        },
+        {
+          "media_type": "audio",
+          "url": "https://example.com/fossil-introduction.mp3",
+          "alt_text": "Audio introduction to fossil evidence"
+        },
+        {
+          "media_type": "video",
+          "url": "https://example.com/fossil-evidence.mp4",
+          "alt_text": "Video about fossil evidence"
+        },
+        {
+          "media_type": "diagram",
+          "url": "https://example.com/fossil-timeline.svg",
+          "alt_text": "Timeline showing fossil changes"
+        }
+      ],
+      "feedback": "Look for patterns of change across fossil layers and transitional forms.",
+      "worked_solution": "A complete answer describes changes in fossils across geological layers and explains how transitional fossils connect ancestral and later species.",
+      "partial_credit": {
+        "rubric": [
+          {
+            "criterion": "Uses fossil-layer evidence",
+            "max_points": 4
+          },
+          {
+            "criterion": "Explains change over time",
+            "max_points": 3
+          },
+          {
+            "criterion": "Uses a relevant example",
+            "max_points": 3
+          }
+        ]
+      },
+      "tags": [
+        "biology",
+        "evolution",
+        "fossils"
+      ],
+      "difficulty": 4,
+      "standard_code": "BIO-EVO-04",
+      "blooms_level": "analyze",
+      "folder_path": "Biology/Evolution"
+    },
+    {
+      "question_text": "What is {a} + {b}?",
+      "question_type": "numeric",
+      "points": 2,
+      "position": 12,
+      "answer_config": {
+        "correct_value_expression": "a + b",
+        "tolerance": 0
+      },
+      "parameter_config": {
+        "a": {
+          "minimum": 1,
+          "maximum": 10,
+          "step": 1
+        },
+        "b": {
+          "minimum": 1,
+          "maximum": 10,
+          "step": 1
+        }
+      },
+      "feedback": "Add the two generated values.",
+      "worked_solution": "Substitute the generated values for a and b, then add them.",
+      "tags": [
+        "math",
+        "parameterized"
+      ],
+      "difficulty": 1,
+      "blooms_level": "apply"
+    }
+  ]
+}

@@ -6,7 +6,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from fastapi import Cookie, Depends, HTTPException, Response, status
 from fastapi.concurrency import run_in_threadpool
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 from db import get_db
 from app.routes.auth.auth import auth_router
@@ -21,7 +21,7 @@ COOKIE_SECURE = False  # Make this TRUE in PROD
 
 
 class LoginRequest(BaseModel):
-    username: str
+    email: EmailStr
     password: str
 
 
@@ -35,9 +35,10 @@ async def login(
         await cur.execute(
             """
             SELECT id, username, email, role, created_at, password_hash
-            FROM users WHERE username = %s
+            FROM users
+            WHERE lower(email) = lower(%s)
             """,
-            (data.username,),
+            (data.email,),
         )
         user = await cur.fetchone()
 
@@ -48,7 +49,7 @@ async def login(
         user = None
 
     if user is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid username or password")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid email or password")
 
     token = secrets.token_urlsafe(32)
     expires_at = datetime.now(timezone.utc) + SESSION_TTL
